@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,6 +24,20 @@ class Post extends Model
     protected $casts = [
         'created_at' => 'datetime',
     ];
+
+
+    public function __toString(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     /**
      * Returns the options to make it slugable
@@ -54,6 +69,22 @@ class Post extends Model
     public function getReadMoreLinkAttribute(): string
     {
         return route('blog.show', ['post' => $this]);
+    }
+
+
+    public function title(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => strtoupper($value),
+        );
+    }
+
+
+    public function editLink(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => route('posts.edit', ['post' => $this]),
+        );
     }
 
     /**

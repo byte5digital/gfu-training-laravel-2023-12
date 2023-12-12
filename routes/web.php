@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
@@ -44,13 +45,13 @@ Route::name('blog.')
     ->group(function() {
         Route::get('/', [BlogController::class, 'index'])
             ->name('index');
-        Route::get('/{post:slug}', [BlogController::class, 'show'])
+        Route::get('/{post}', [BlogController::class, 'show'])
             ->name('show');
 
-        Route::get('/create', [\App\Http\Controllers\PostController::class, 'create'])
+        Route::get('/create', [PostController::class, 'create'])
             ->name('create');
     });
 
 Route::prefix('/posts')
-    ->resource('posts', \App\Http\Controllers\PostController::class);
+    ->resource('posts', PostController::class);
 

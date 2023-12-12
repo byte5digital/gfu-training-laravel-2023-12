@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,12 +36,12 @@ class PostController extends Controller
     public function store(StorePostRequest $request): Application|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $postCreated = (new Post)
-            ->fill($request->input())
+            ->fill($request->validated())
             ->save();
 
         if ( ! $postCreated) {
             return redirect(route('posts.create'))
-                ->withErrors('storePost', __('Unable to create post!'));
+                ->with('error', __('Unable to create post!'));
         }
 
         return redirect(route('blog.index'))
@@ -57,17 +59,26 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post): \Illuminate\Contracts\View\View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        //
+        return view('posts.form', ['post' => $post]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdatePostRequest $request, Post $post): Application|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
-        //
+        $postUpdated = $post->fill($request->validated())
+            ->update();
+
+        if ( ! $postUpdated) {
+            return redirect(route('posts.edit', ['post' => $post]))
+                ->with('error', __('Unable to update post ":post"!', ['post' => $post]));
+        }
+
+        return redirect(route('blog.index'))
+            ->with('status', __('Post ":post" updated successfully!', ['post' => $post]));
     }
 
     /**
