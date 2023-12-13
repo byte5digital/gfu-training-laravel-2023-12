@@ -5,6 +5,7 @@ namespace App\Models;
 //use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -47,6 +48,16 @@ class User extends Authenticatable /*implements MustVerifyEmail*/
     ];
 
     /**
+     * Returns the users name
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
+    /**
      * Filters only verified users
      *
      * @param Builder $query
@@ -56,4 +67,11 @@ class User extends Authenticatable /*implements MustVerifyEmail*/
     {
         $query->whereNotNull('email_verified_at');
     }
+
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
 }

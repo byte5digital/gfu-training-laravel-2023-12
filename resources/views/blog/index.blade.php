@@ -23,8 +23,10 @@
 
                         <p class="mb-2">{{ $post->getTextAsParagraphs()->first() }}</p>
 
-                        <div
-                            class="text-slate-500 mb-4">{{ __('created at :date o\'clock', ['date' => $post->created_at->format('d.m.Y H:i:s')]) }}</div>
+                        <div class="text-slate-500 mb-4">
+                            {{ __('created at :date o\'clock', ['date' => $post->created_at->format('d.m.Y H:i:s')]) }}
+                            {{ __('from :user', ['user' => $post->user]) }}
+                        </div>
 
                         <x-button href="{{ $post->readMoreLink }}">{{ __('read more') }}</x-button>
                         @auth()
