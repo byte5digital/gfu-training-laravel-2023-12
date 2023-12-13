@@ -4,6 +4,7 @@ namespace App\Models;
 
 //use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -72,6 +73,13 @@ class User extends Authenticatable /*implements MustVerifyEmail*/
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function profileLink(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => route('profile.view', ['user' => $this]),
+        );
     }
 
 }

@@ -36,6 +36,8 @@ Route::middleware('auth')
             ->name('update');
         Route::delete('/', [ProfileController::class, 'destroy'])
             ->name('destroy');
+        Route::get('/{user}', [ProfileController::class, 'view'])
+            ->name('view');
     });
 
 require __DIR__.'/auth.php';
