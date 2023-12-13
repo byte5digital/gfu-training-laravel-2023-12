@@ -37,6 +37,7 @@ class PostController extends Controller
     {
         $postCreated = (new Post)
             ->fill($request->validated())
+            ->syncTagsFromString($request->validated('tags'))
             ->save();
 
         if ( ! $postCreated) {
@@ -66,10 +67,15 @@ class PostController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param UpdatePostRequest $request
+     * @param Post $post
+     * @return Application|Redirector|RedirectResponse
      */
-    public function update(UpdatePostRequest $request, Post $post): Application|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
+    public function update(UpdatePostRequest $request, Post $post): Application|Redirector|RedirectResponse
     {
         $postUpdated = $post->fill($request->validated())
+            ->syncTagsFromString($request->validated('tags'))
             ->update();
 
         if ( ! $postUpdated) {

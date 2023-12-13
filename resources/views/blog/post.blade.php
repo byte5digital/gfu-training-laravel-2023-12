@@ -20,7 +20,12 @@
                     @foreach($post->getTextAsParagraphs() as $paragraph)
                         <p class="mb-2">{{ $paragraph }}</p>
                     @endforeach
+
+                    <div class="mt-4">
+                        <x-tags :tags="$post->tags"/>
+                    </div>
                 </div>
+
 
             </div>
         </div>

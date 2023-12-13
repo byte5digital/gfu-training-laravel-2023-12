@@ -43,6 +43,15 @@
                         <x-input-error :messages="$errors->get('text')" class="mt-2"/>
                     </div>
 
+                    <!-- Tags -->
+                    <div>
+                        <x-input-label for="tags" :value="__('Tags')"/>
+                        <x-text-input id="tags" class="block mt-1 w-full" type="text" name="tags"
+                                      :value="old('tags', $post->tags->count() ? $post->tags->implode('name', ', ') : '')"
+                                      required/>
+                        <x-input-error :messages="$errors->get('tags')" class="mt-2"/>
+                    </div>
+
                     <!-- Submit -->
                     <div class="flex items-center justify-end mt-4">
                         <x-primary-button class="ms-4">
