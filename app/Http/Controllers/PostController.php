@@ -45,7 +45,7 @@ class PostController extends Controller
         }
 
         return redirect(route('blog.index'))
-            ->with('status', __('Post successfully updated!'));
+            ->with('success', __('Post successfully updated!'));
     }
 
     /**
@@ -78,14 +78,22 @@ class PostController extends Controller
         }
 
         return redirect(route('blog.index'))
-            ->with('status', __('Post ":post" updated successfully!', ['post' => $post]));
+            ->with('success', __('Post ":post" updated successfully!', ['post' => $post]));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post): Application|Redirector|RedirectResponse
     {
-        //
+        $redirection = redirect(route('blog.index'));
+
+        if ( ! $post->delete()) {
+            return $redirection
+                ->with('error', __('Unable to destroy Post ":post"!', ['post' => $post]));
+        }
+
+        return $redirection
+            ->with('success', __('Post ":post" destroyed successfully!', ['post' => $post]));
     }
 }
