@@ -29,6 +29,11 @@
                         <x-button href="{{ $post->readMoreLink }}">{{ __('read more') }}</x-button>
                         @auth()
                             <x-button href="{{ $post->editLink }}" class="ml-2">{{ __('edit') }}</x-button>
+                            <form method="POST" action="{{ route('posts.destroy', ['post' => $post]) }}">
+                                @csrf
+                                @method('DELETE')
+                                <x-primary-button class="bg-red-600 hover:bg-red-800">{{ __('Delete Post') }}</x-primary-button>
+                            </form>
                         @endauth
 
                     </div>
