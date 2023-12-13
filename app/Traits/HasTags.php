@@ -6,7 +6,7 @@ trait HasTags
 {
     use HasSpatieTags;
 
-    public function syncTagsFromString(string $tags): static
+    public function syncTagsFromString(string $tags): self
     {
         $tags = collect(explode(',', $tags))->map(fn($value) => trim($value));
         return $this->syncTags($tags);

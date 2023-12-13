@@ -73,7 +73,7 @@ class Post extends Model
      */
     public function getReadMoreLinkAttribute(): string
     {
-        return route('blog.show', ['post' => $this]);
+        return route('posts.show', ['post' => $this]);
     }
 
 
@@ -98,7 +98,7 @@ class Post extends Model
      * @param Builder $query
      * @return void
      */
-    public function scopeRecursive(Builder $query): void
+    public function scopeReverse(Builder $query): void
     {
         $query->orderBy('created_at', 'DESC');
     }

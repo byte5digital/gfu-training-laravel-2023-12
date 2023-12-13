@@ -19,7 +19,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::reverse()->paginate(10);
+
+        return view('posts.index', [
+            'posts' => $posts,
+        ]);
     }
 
     /**
@@ -45,16 +49,16 @@ class PostController extends Controller
                 ->with('error', __('Unable to create post!'));
         }
 
-        return redirect(route('blog.index'))
+        return redirect(route('posts.index'))
             ->with('success', __('Post successfully updated!'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $post): View|Application|Factory
     {
-        //
+        return view('posts.show', ['post' => $post]);
     }
 
     /**
@@ -83,7 +87,7 @@ class PostController extends Controller
                 ->with('error', __('Unable to update post ":post"!', ['post' => $post]));
         }
 
-        return redirect(route('blog.index'))
+        return redirect(route('posts.index'))
             ->with('success', __('Post ":post" updated successfully!', ['post' => $post]));
     }
 
@@ -92,7 +96,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post): Application|Redirector|RedirectResponse
     {
-        $redirection = redirect(route('blog.index'));
+        $redirection = redirect(route('posts.index'));
 
         if ( ! $post->delete()) {
             return $redirection
