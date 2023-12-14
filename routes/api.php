@@ -18,15 +18,21 @@ use Illuminate\Support\Facades\Route;
 #    return $request->user();
 #});
 
-Route::get('posts', [PostsController::class, 'index'])
-    ->name('posts.index');
-Route::get('posts/limit/{limit}', [PostsController::class, 'index']);
-Route::get('posts/limit/{limit}/start/{start}', [PostsController::class, 'index']);
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('/posts', [PostsController::class, 'index'])
+        ->name('posts.index');
+    Route::get('/posts/limit/{limit}', [PostsController::class, 'index']);
+    Route::get('/posts/limit/{limit}/start/{start}', [PostsController::class, 'index']);
 
-Route::get('posts/{post:id}', [PostsController::class, 'show'])
-    ->name('posts.show');
+    Route::get('/posts/{post:id}', [PostsController::class, 'show'])
+        ->name('posts.show');
 
-Route::delete('posts/{post:id}', [PostsController::class, 'destroy'])
-    ->name('posts.destroy');
+    Route::delete('/posts/{post:id}', [PostsController::class, 'destroy'])
+        ->name('posts.destroy');
 
-#Route::apiResource('posts', PostsController::class);
+    Route::post('/posts', [PostsController::class, 'create'])
+        ->name('posts.create');
+
+    #Route::apiResource('posts', PostsController::class);
+});
+

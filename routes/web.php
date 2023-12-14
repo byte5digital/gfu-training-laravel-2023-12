@@ -36,6 +36,8 @@ Route::middleware('auth')
             ->name('destroy');
         Route::get('/{user}', [ProfileController::class, 'view'])
             ->name('view');
+        Route::get('/token/create', [ProfileController::class, 'createToken'])
+            ->name('token.create');
     });
 
 require __DIR__.'/auth.php';
