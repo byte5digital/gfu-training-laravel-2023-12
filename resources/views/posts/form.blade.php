@@ -47,8 +47,7 @@
                     <div>
                         <x-input-label for="tags" :value="__('Tags')"/>
                         <x-text-input id="tags" class="block mt-1 w-full" type="text" name="tags"
-                                      :value="old('tags', $post->tags->count() ? $post->tags->implode('name', ', ') : '')"
-                                      required/>
+                                      :value="old('tags', isset($post) && $post->tags->count() ? $post->tags->implode('name', ', ') : '')"/>
                         <x-input-error :messages="$errors->get('tags')" class="mt-2"/>
                     </div>
 

@@ -21,6 +21,7 @@ class PostFactory extends Factory
             'user_id'   => User::inRandomOrder()->limit(1)->first()->getKey(),
             'title'     => fake()->text(20),
             'text'      => fake()->paragraphs(rand(3, 10), true),
+            'tags'      => implode(fake()->words(rand(0, 5)), ', '),
         ];
     }
 }

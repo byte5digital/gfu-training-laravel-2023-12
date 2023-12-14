@@ -39,15 +39,15 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request): Application|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
-        $postCreated = (new Post)
-            ->fill($request->validated())
-            ->syncTagsFromString($request->validated('tags'))
-            ->save();
+        $post = (new Post)->fill($request->validated());
+        $postCreated = $post->save();
 
         if ( ! $postCreated) {
             return redirect(route('posts.create'))
                 ->with('error', __('Unable to create post!'));
         }
+
+        $post->syncTagsFromString($request->validated('tags') ?? '');
 
         return redirect(route('posts.index'))
             ->with('success', __('Post successfully updated!'));
@@ -79,7 +79,7 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post): Application|Redirector|RedirectResponse
     {
         $postUpdated = $post->fill($request->validated())
-            ->syncTagsFromString($request->validated('tags'))
+            ->syncTagsFromString($request->validated('tags') ?? '')
             ->update();
 
         if ( ! $postUpdated) {
