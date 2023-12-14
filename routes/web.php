@@ -40,6 +40,12 @@ Route::middleware('auth')
 
 require __DIR__.'/auth.php';
 
-Route::prefix('/posts')
-    ->resource('posts', PostController::class);
-
+$allowedForGuests = ['index', 'show'];
+Route::middleware('auth')->group(function() use($allowedForGuests) {
+    Route::resource('posts', PostController::class, [
+        'except' => $allowedForGuests,
+    ]);
+});
+Route::resource('posts', PostController::class, [
+    'only' => $allowedForGuests,
+]);
