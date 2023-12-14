@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -18,6 +19,10 @@ class UserSeeder extends Seeder
 
         User::factory()
             ->count(50)
-            ->create();
+            ->create()
+            ->each(function (User $user) {
+                $posts = Post::factory()->count(rand(0, 10))->create();
+                $user->posts()->saveMany($posts);
+            });
     }
 }
