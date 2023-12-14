@@ -86,3 +86,38 @@ it('cannot create posts with short text', function() {
 
     $this->assertDatabaseCount('posts', 0);
 });
+
+it('can be edited a post', function() {
+    User::factory()->create();
+    $post = Post::factory()->create();
+    $user = $post->user;
+    /** @var User $user */
+
+    $editedTitle = 'Edited Title';
+    $response = $this->actingAs($user)->put('/posts/' . $post->slug, [
+        'title' => $editedTitle,
+        'text'  => $post->text,
+        'tags'  => $post->tags->implode(', '),
+    ]);
+
+    $response->assertStatus(302)
+        ->assertSessionHasNoErrors();
+
+    $this->assertDatabaseHas('posts', [
+        'title' => $editedTitle,
+    ]);
+});
+
+it('can be deleted a post', function() {
+    $user = User::factory()->create();
+    $post = Post::factory()->create();
+
+    $response = $this->actingAs($user)->delete('/posts/' . $post->slug);
+
+    $response->assertStatus(302)
+        ->assertSessionHasNoErrors();
+
+    $this->assertDatabaseMissing('posts', [
+        'deleted_at' => null,
+    ]);
+});
