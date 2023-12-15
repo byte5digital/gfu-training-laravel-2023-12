@@ -36,8 +36,21 @@ Route::middleware('auth')
             ->name('destroy');
         Route::get('/{user}', [ProfileController::class, 'view'])
             ->name('view');
-        Route::get('/token/create', [ProfileController::class, 'createToken'])
-            ->name('token.create');
+
+        // Tokens
+        Route::prefix('/token')
+            ->name('token.')
+            ->group(function() {
+                Route::get('create', [ProfileController::class, 'createToken'])
+                    ->name('create');
+                Route::prefix('/{token}')
+                    ->group(function() {
+                        Route::get('/refresh', [ProfileController::class, 'refreshToken'])
+                            ->name('refresh');
+                        Route::get('/destroy', [ProfileController::class, 'destroyToken'])
+                            ->name('destroy');
+                });
+            });
     });
 
 require __DIR__.'/auth.php';

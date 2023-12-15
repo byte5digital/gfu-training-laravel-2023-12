@@ -13,12 +13,17 @@
         @if (0 === $user->tokens->count())
             <x-alert type="notice" heading="Attention!">{{ __('No token available!') }}</x-alert>
         @else
-            <div class="grid gap-4 grid-cols-2">
+            <div class="grid gap-4 grid-cols-3">
                 <div>{{ __('notice') }}</div>
                 <div>{{ __('expires') }}</div>
+                <div></div>
                 @foreach($user->tokens as $token)
                     <div>{{ $token->name }}</div>
                     <div>{{ $token->expires_at }}</div>
+                    <div class="text-right">
+                        <x-button href="{{ route('profile.token.refresh', ['token' => $token]) }}" class="mr-2">refresh</x-button>
+                        <x-button href="{{ route('profile.token.destroy', ['token' => $token]) }}" class="bg-red-600 hover:bg-red-800">delete</x-button>
+                    </div>
                 @endforeach
             </div>
         @endif

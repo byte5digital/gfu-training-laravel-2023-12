@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
+use App\Traits\Controllers\CanManageTokens;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,6 +14,8 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    use CanManageTokens;
+
     /**
      * Display the user's profile form.
      */
@@ -66,13 +69,4 @@ class ProfileController extends Controller
         return view('profile.view', ['user' => $user]);
     }
 
-    public function createToken()
-    {
-        $user = Auth::user();
-        $notice = __('Created on :date', ['date' => Carbon::now()]);
-        $expiresAt = Carbon::now()->addDays(7);
-        $accessToken = $user->createToken($notice, ['*'], $expiresAt);
-        $message = __('Remember your token: ' . $accessToken->plainTextToken);
-        return redirect()->back()->with('success', $message);
-    }
 }
