@@ -21,7 +21,6 @@ class Post extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'user_id',
         'title',
         'text',
     ];
@@ -34,6 +33,12 @@ class Post extends Model
     public function __toString(): string
     {
         return $this->title;
+    }
+
+    public function insert(array $options = []): bool
+    {
+        $this->user_id = auth()->id();
+        return parent::insert($options);
     }
 
     /**

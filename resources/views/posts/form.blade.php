@@ -20,8 +20,6 @@
                     @csrf
                     @if (isset($post))
                         @method('PUT')
-                    @else
-                        <input type="hidden" name="user_id" value="{{ auth()->user()->getKey() }}"/>
                     @endif
 
                     <x-input-error :messages="$errors->get('user_id')" class="mt-2"/>
