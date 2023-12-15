@@ -5,7 +5,7 @@
     <p class="mb-2">{{ $post->getTextAsParagraphs()->first() }}</p>
 
     <div class="text-slate-500 mb-4">
-        {{ __('created at :date o\'clock', ['date' => $post->created_at->format('d.m.Y H:i:s')]) }}
+        {{ __('created at :date o\'clock', ['date' => $post->created_at]) }}
         {!! __('from <a href=":link">:user</a>', ['user' => $post->user, 'link' => $post->user->profileLink]) !!}
     </div>
 
