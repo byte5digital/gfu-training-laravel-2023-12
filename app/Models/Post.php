@@ -66,9 +66,15 @@ class Post extends Model
      *
      * @return Collection
      */
-    public function getTextAsParagraphs(): Collection
+    public function getTextAsParagraphs(int|null $count = null): Collection
     {
-        return collect(preg_split('#[\r\n]+#', $this->text));
+        $paragraphs = collect(preg_split('#[\r\n]+#', $this->text));
+
+        if (null !== $count) {
+            return $paragraphs->slice(0, $count);
+        }
+
+        return $paragraphs;
     }
 
     /**

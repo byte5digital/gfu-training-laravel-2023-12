@@ -10,17 +10,26 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
-                    @foreach ($posts as $post)
-                        <div class="col-md-4">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ $post->title }}</h5>
-                                    <p class="card-text">{{ $post->excerpt }}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        @foreach ($posts as $post)
+                            @php /** @var \App\Models\Post $post */ @endphp
+
+                            <div class="rounded overflow-hidden shadow-lg xl:last:hidden">
+                                <div class="px-6 py-4">
+                                    <div class="font-bold text-xl mb-2">{{ $post->title }}</div>
+                                    <p class="text-gray-700 text-base">{{ $post->getTextAsParagraphs(1)[0] }}</p>
+                                </div>
+                                @if($post->tags->count())
+                                    <div class="px-6 py-4">
+                                        <x-tags :tags="$post->tags"></x-tags>
+                                    </div>
+                                @endif
+                                <div class="px-6 py-4">
                                     <a href="{{ route('posts.show', $post) }}" class="btn btn-primary">Weiterlesen</a>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
 
                 </div>
             </div>
